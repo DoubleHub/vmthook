@@ -43,9 +43,9 @@ class VMTHook {
 			const std::size_t table_size = this->total_functions * sizeof(std::uintptr_t);
 
 			this->original_vft = *this->baseclass;
-			this->current_vft = std::make_unique<std::uintptr_t[]>(this->total_functions);
+			this->current_vft = std::make_unique<std::uintptr_t[]>(this->total_functions + 1);
 
-			std::memcpy(this->current_vft.get(), this->original_vft, table_size);
+			std::memcpy(this->current_vft.get(), &this->original_vft[-1], table_size);
 
 			*this->baseclass = this->current_vft.get();
 		};
